@@ -37,7 +37,8 @@ Please use the following interface for your ADT (included in the `src` directory
 
 ```java
 public interface MaxPQ<T extends Comparable<T>> {
-  T delMax();
+  T removeMax();
+  T getMax();
   void insert(T key);
   boolean isEmpty();
   int size();
@@ -56,10 +57,10 @@ means that the type variable `T` can be replaced by any type that includes an `i
 ## Implementation
 I have included some code to get you started in the `LinkedMaxPQ.java` file in the `src` directory. You do not have to use this code, but you should name your implementation `LinkedMaxPQ.java`, and as always, the file should go in the `src` directory.
 
-### `insert()` and `delMax()` methods
+### `insert()` and `removeMax()` methods
 As with the sequential implementation, the `insert` operation must find the tree node to which a new entry is to be attached, i.e., the next available place to attach a new node. It should then "swim" the info in that new node up to a node where it is bigger than its children but smaller than its parent.
 
-Similarly, the `delMax` operation, after it removes the top (maximum, largest) node, must replace the info in the top node with the info of the last node in the complete binary tree, and then "sink" it down to a location where it is larger than its children but smaller than its parent. 
+Similarly, the `removeMax` operation, after it removes the top (maximum, largest) node, must replace the info in the top node with the info of the last node in the complete binary tree, and then "sink" it down to a location where it is larger than its children but smaller than its parent. 
 
 ### `toString()` method
 The toString() method should return the values in the nodes in *level-order* (a.k.a. "breadth first"). That is, it should print the value of each node on each level from left to right, starting at the level of the root node and proceeding down  level by level. I have provided some code for this in the `example_code` repo on binary trees, which you can repurpose for this problem set.
@@ -74,7 +75,7 @@ You should write a `sink()` method and a `swim()` method to help you with your i
 Remember that **you are not actually sinking or swimming a `Node`**. Instead, you just swap the **data** in the `info` field of the current `Node` with the data in the `info` field in the parent `Node` (if swimming) or child `Node` (if sinking). These will be functions with return type `void`.
 
 ### `findNode()` helper method
-You should write a method for finding a particular node based on its number. You need to be able to identify the bottom node so that you can move it to the top after removing the top in `delMax()`. And you need to be able to know where to insert a new node when calling `insert()`. 
+You should write a method for finding a particular node based on its number. You need to be able to identify the bottom node so that you can move it to the top after removing the top in `removeMax()`. And you need to be able to know where to insert a new node when calling `insert()`. 
 
 In the sequential implementation, the these locations were easy to find using the size of the tree to compute the appropriate array index. With this linked implementation, a little more work is required. You still use the size of the data structure, but you will use it to compute the path from the root to the desired node using integer division by 2 and the modulus operator.
 
@@ -113,7 +114,7 @@ When you **insert an element**, you want to find where that new bottom node is *
 You will have to use a different value for `z` above, depending on whether you want it to return a pointer to the `Node` you have to delete (`z` should be the size of the PQ) or to the `Node` whose right or left child you want to create (`z` should be the future size of the PQ divided by 2).
 
 ### Don't forget the special cases
-When inserting to an empty priority queue, you don't need to call `swim()` or `getNode()`. Just create a new `Node` and have `top` point at it. When deleting the min from a priority queue of size 1, you don't need to call `sink()` or `getNode()`. Just return the `info` and set `top` to `null`. And if you try to `delMax()` from an empty priority queue, you can just return `null`.
+When inserting to an empty priority queue, you don't need to call `swim()` or `getNode()`. Just create a new `Node` and have `top` point at it. When deleting the min from a priority queue of size 1, you don't need to call `sink()` or `getNode()`. Just return the `info` and set `top` to `null`. And if you try to `removeMax()` from an empty priority queue, you can just return `null`.
 
 ### Testing your code `main()`
 
@@ -131,10 +132,11 @@ Once your code works to your satisfaction, push `LinkedMaxPQ.java`to your person
 
 1. The file **must be in the `src` directory**. You will lose a point if it's in the wrong directory.
 
-2. Your code must compile. If it does not compile, you will get a 0. If your code does not compile at 11:45pm, comment out the part of the code that is preventing compilation, and include an comment explaining why you are commenting it out.
+2. Your code must compile. If it does not compile, you will get a 0. If your code does not compile when it's time to submit, comment out the part of the code that is preventing compilation, and include an explanation of what you were trying to do and why it's not working.
 
 3. The TAs will review and run your code. Note that in addition to running your `main()` method, they will try out one of their own. It's a good idea to do some error checking to avoid any surprises during grading.
 
-min
-5. One point in your grade for this problem set will be for efficiency. Do not write more code than you need. Do not write the same code over and over again. Do not create objects that do not need to be created. Do not move around Node objects when you can just exhange info.
+4. One point in your grade will be for "style and formatting". This includes (1) comments; (2) indenting in a way that allows for easy reading; (3) naming variables in helpful or memorable ways; (4) remembering that methods and variables should start with lowercase letters, while class and interface names should begin with a capital letter; (5) making consistent formamtting choices.
+
+5. One point in your grade for this problem set will be for "efficiency". Do not write more code than you need. Do not create objects that do not need to be created. Do not adjust pointers in `swim()` and `sink()` if it's possible to just swap what is stored in the data storage variable.
 
