@@ -60,22 +60,22 @@ I have included some code to get you started in the `LinkedMaxPQ.java` file in t
 ### `insert()` and `removeMax()` methods
 As with the sequential implementation, the `insert` operation must find the tree node to which a new entry is to be attached, i.e., the next available place to attach a new node. It should then "swim" the info in that new node up to a node where it is bigger than its children but smaller than its parent.
 
-Similarly, the `removeMax` operation, after it removes the top (maximum, largest) node, must replace the info in the top node with the info of the last node in the complete binary tree, and then "sink" it down to a location where it is larger than its children but smaller than its parent. 
+Similarly, the `removeMax` operation, after it removes the root (maximum, largest) node, must replace the info in the root node with the info of the last node in the complete binary tree, and then "sink" it down to a location where it is larger than its children but smaller than its parent. 
 
 ### `toString()` method
-The toString() method should return the values in the nodes in *level-order* (a.k.a. "breadth first"). That is, it should print the value of each node on each level from left to right, starting at the level of the root node and proceeding down  level by level. I have provided some code for this in the `example_code` repo on binary trees, which you can repurpose for this problem set.
+The toString() method should return the values in the nodes in *level-order* (a.k.a. "breadth first"). That is, it should print the value of each node on each level from left to right, starting at the level of the root node and proceeding down  level by level. I have implemented this method for you.
 
 ### `sink()` and `swim()` helper methods
 You should write a `sink()` method and a `swim()` method to help you with your insert and delete methods. Both will use the `compareTo` method to determine whether to swap the info in the current node with its parent (when swimming) or the larger of its two children (when sinking). 
 
 `swim()` takes a pointer to the `Node` you inserted at the bottom of the tree. It compares that Node's `info` with the `info` of its parent. If its `info` is greater than that of its parent (use `compareTo()`), swap their infos, and then make the pointer point at the parent. Do this until you find a parent whose info is greater or when you have no more parents.
 
-`sink()` takes a pointer to `top`, whose info should be the info of the node previously at the bottom of the tree. It compares that Node's info with the info of the larger of its children. If its info is less than that of its larger child, swap their infos and make the pointer point at that child. Do this until your info is larger than that of both children.
+`sink()` takes a pointer to `root`, whose info should be the info of the node previously at the bottom of the tree. It compares that Node's info with the info of the larger of its children. If its info is less than that of its larger child, swap their infos and make the pointer point at that child. Do this until your info is larger than that of both children.
 
 Remember that **you are not actually sinking or swimming a `Node`**. Instead, you just swap the **data** in the `info` field of the current `Node` with the data in the `info` field in the parent `Node` (if swimming) or child `Node` (if sinking). These will be functions with return type `void`.
 
 ### `findNode()` helper method
-You should write a method for finding a particular node based on its number. You need to be able to identify the bottom node so that you can move it to the top after removing the top in `removeMax()`. And you need to be able to know where to insert a new node when calling `insert()`. 
+You should write a method for finding a particular node based on its number. You need to be able to identify the bottom node so that you can move it to the root position after removing the root in `removeMax()`. And you need to be able to know where to insert a new node when calling `insert()`. 
 
 In the sequential implementation, the these locations were easy to find using the size of the tree to compute the appropriate array index. With this linked implementation, a little more work is required. You still use the size of the data structure, but you will use it to compute the path from the root to the desired node using integer division by 2 and the modulus operator.
 
@@ -97,7 +97,7 @@ Here's an intuition about how this will work. Look at the tree below, where the 
 
 To navigate in a tree to a node according to its number, you can write a recursive method that works like this. (You are free to use an iterative method, if you like!)
 
-1. The method will have two arguments: `Node traverse` and `int z`. The first time you call the method, you'll pass in `top` for the `traverse` parameter and the number of the node you want to reach for the `z` parameter.
+1. The method will have two arguments: `Node traverse` and `int z`. The first time you call the method, you'll pass in `root` for the `traverse` parameter and the number of the node you want to reach for the `z` parameter.
 
 2. Base case: if `z` is equal to 1, return `traverse`.
 
@@ -114,7 +114,7 @@ When you **insert an element**, you want to find where that new bottom node is *
 You will have to use a different value for `z` above, depending on whether you want it to return a pointer to the `Node` you have to delete (`z` should be the size of the PQ) or to the `Node` whose right or left child you want to create (`z` should be the future size of the PQ divided by 2).
 
 ### Don't forget the special cases
-When inserting to an empty priority queue, you don't need to call `swim()` or `getNode()`. Just create a new `Node` and have `top` point at it. When deleting the min from a priority queue of size 1, you don't need to call `sink()` or `getNode()`. Just return the `info` and set `top` to `null`. And if you try to `removeMax()` from an empty priority queue, you can just return `null`.
+When inserting to an empty priority queue, you don't need to call `swim()` or `getNode()`. Just create a new `Node` and have `root` point at it. When deleting the min from a priority queue of size 1, you don't need to call `sink()` or `getNode()`. Just return the `info` and set `root` to `null`. And if you try to `removeMax()` from an empty priority queue, you can just return `null`.
 
 ### Testing your code `main()`
 
