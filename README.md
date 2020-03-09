@@ -136,7 +136,7 @@ Once your code works to your satisfaction, push `LinkedMaxPQ.java`to your person
 
 3. The TAs will review and run your code. Note that in addition to running your `main()` method, they will try out one of their own. It's a good idea to do some error checking to avoid any surprises during grading.
 
-4. One point in your grade will be for "style and formatting". This includes (1) comments; (2) indenting in a way that allows for easy reading; (3) naming variables in helpful or memorable ways; (4) remembering that methods and variables should start with lowercase letters, while class and interface names should begin with a capital letter; (5) making consistent formamtting choices.
+4. One point in your grade will be for "style and formatting". This includes (1) comments; (2) indenting in a way that allows for easy reading; (3) naming variables in helpful or memorable ways; (4) remembering that methods and variables should start with lowercase letters, while class and interface names should begin with a capital letter; (5) making consistent formatting choices.
 
 5. One point in your grade for this problem set will be for "efficiency". Do not write more code than you need. Do not create objects that do not need to be created. Do not adjust pointers in `swim()` and `sink()` if it's possible to just swap what is stored in the data storage variable.
 
