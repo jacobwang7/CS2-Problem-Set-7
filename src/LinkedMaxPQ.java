@@ -27,22 +27,58 @@ public class LinkedMaxPQ<T extends Comparable<T>> implements MaxPQ<T> {
   //     Helper methods to implement.       //
   ////////////////////////////////////////////
 
-  // 1. Node getNode(int z, Node traverse)
+  //getNode(z/2, traverse).left;
+
+  Node getNode(int z, Node traverse) {
+    if (z==1) {
+      return traverse;
+    } else if (z % 2 == 0) {
+      return getNode(z/2, traverse.left);
+    } else {
+      return getNode(z/2, traverse.right);
+    }
+
+  }
   //    A method that returns a pointer to a specific
   //    node in the tree, according to its number.
   //    You will use this to identify the "bottom node"
   //    in removeMax() and to identify where to insert a
   //    new node in insert().
 
-  // 2. public void sink (Node n)
+
+  public void sink (Node n) {
+    while (n.left != null) {
+      Node j = n.left;
+      if (n.right != null && j.info.compareTo(n.right.info) < 1) {
+        j = n.right;
+      }
+      if (n.info.compareTo(j.info) >= 0) {
+      T temp = j.info;
+      j.info = n.info;
+      n.info = temp;
+    } else {
+      break;
+    }
+    n = j;
+  }
+
+  }
+
+
   //    A method that will sink new info down to a node where it
   //    is bigger than its children but smaller than its parent.
 
-  // 3. public void swim (Node n)
+  public void swim (Node n) {
+    while (size > 1 && n.parent.info.compareTo(n.info) < 0) {
+      T temp = n.info;
+      n.info = n.parent.info;
+      n.parent.info = temp;
+      n = n.parent;
+    }
+  }
   //    A method that will swim info up from the bottom to a node
   //    where it's smaller than its parent and bigger than its children.
 
-  // 4. String printThisLevel (Node rootnode, int level) {
   //    A helper method that is used in the instance method,
   //    toString() defined for you below.
   String printThisLevel (Node rootnode, int level) {
@@ -72,29 +108,71 @@ public class LinkedMaxPQ<T extends Comparable<T>> implements MaxPQ<T> {
   // Methods you must implement from the PQ interface //
   //////////////////////////////////////////////////////
 
-  // public T removeMax ();
+  public T removeMax () {
+    if (size == 1) {
+      T toreturn = root.info;
+      root = null;
+      size--;
+      return toreturn;
+    } else {
+    T toreturn = root.info;
+    Node n = getNode(size, root);
+    if (size % 2 == 0) {
+      n.parent.left = null;
+    } else {
+      n.parent.right = null;
+    }
+    n.parent = null;
+    root.info = n.info;
+    sink(root);
+    return toreturn;
+    }
+  }
   // Remove and return the max (root) element
   // You will call sink() and getNode()
 
-  // public T getMax ();
+  public T getMax () {
+    return root.info;
+  }
   // Return but do not remove the max (root) element
 
-  // public void insert(T key);
+  public void insert(T key) {
+    if (size == 0) {
+      Node addme = new Node(key);
+      root = addme;
+      size++;
+    } else {
+    size++;
+    Node n = getNode(size/2, root);
+    Node addme = new Node(key);
+    if (size % 2 != 0) {
+      n.right = addme;
+    } else {
+      n.left = addme;
+    }
+    addme.parent = n;
+    swim(addme);
+    }
+  }
   // Insert a new element.
   // You will call swim() and getNode()
 
   // Return true if the PQ is empty
-  // public boolean isEmpty();
+  public boolean isEmpty() {
+    return (size == 0);
+  }
 
   // Return the size of the PQ.
-  // public int size();
+  public int size() {
+    return size;
+  }
 
   // Return a string showing the PQ in level order, i.e.,
   // containing the info at each node, L to R, from root level to bottom.
   // I've implemented this for you! It uses a helper method from above.
   public String toString() {
     // Create a StringBuilder object to make it more efficient.
-    StringBuilder sb=new StringBuilder();
+    StringBuilder sb = new StringBuilder();
 
     // get the height of the tree
     int height = (int)Math.ceil(Math.log(size+1) / Math.log(2));
@@ -115,6 +193,13 @@ public class LinkedMaxPQ<T extends Comparable<T>> implements MaxPQ<T> {
   ////////////////////////////////////////////////////////////
 
   public static void main (String[] args) {
+    LinkedMaxPQ tree = new LinkedMaxPQ<String>();
+    tree.insert("B");
+    System.out.println(tree.toString());
+    tree.insert("R");
+    System.out.println(tree.toString());
+
+
     // Instantiate a LinkedMaxPQ using <> to define the type T.
     // Call insert() and toString() and removeMax() a bunch of times.
     // Make sure you don't get null pointer exceptions.
